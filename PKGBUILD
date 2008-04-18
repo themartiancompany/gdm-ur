@@ -1,4 +1,3 @@
-# $Id: PKGBUILD,v 1.64 2007/10/19 22:22:58 jgc Exp $
 # Maintainer: Jan de Groot <jgc@archlinux.org>
 pkgname=gdm
 pkgver=2.20.1
