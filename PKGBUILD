@@ -1,7 +1,7 @@
 # Maintainer: Jan de Groot <jgc@archlinux.org>
 pkgname=gdm
 pkgver=2.32.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Gnome Display Manager (a reimplementation of xdm)"
 arch=('i686' 'x86_64')
 license=('GPL')
