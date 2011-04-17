@@ -1,7 +1,7 @@
 # Maintainer: Jan de Groot <jgc@archlinux.org>
 pkgname=gdm
 pkgver=3.0.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Gnome Display Manager (a reimplementation of xdm)"
 arch=('i686' 'x86_64')
 license=('GPL')
@@ -59,4 +59,5 @@ package() {
 
   rmdir "${pkgdir}/var/gdm"
   chmod 1770 "${pkgdir}/var/log/gdm"
+  rm -rf "${pkgdir}/var/run"
 }
