@@ -4,7 +4,7 @@
 pkgbase=gdm
 pkgname=(gdm libgdm)
 pkgver=3.8.1
-pkgrel=2
+pkgrel=1
 pkgdesc="Gnome Display Manager"
 arch=(i686 x86_64)
 license=(GPL)
