@@ -4,7 +4,7 @@
 pkgbase=gdm
 pkgname=(gdm libgdm)
 pkgver=3.8.1.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Gnome Display Manager"
 arch=(i686 x86_64)
 license=(GPL)
@@ -24,6 +24,7 @@ build() {
 
   ./configure \
     --prefix=/usr \
+    --sbindir=/usr/bin \
     --sysconfdir=/etc \
     --libexecdir=/usr/lib/gdm \
     --localstatedir=/var \
