@@ -12,6 +12,7 @@ pkgbase = gdm
 	makedepends = gobject-introspection
 	makedepends = meson
 	makedepends = plymouth
+	makedepends = python-packaging
 	makedepends = yelp-tools
 	depends = accountsservice
 	depends = audit

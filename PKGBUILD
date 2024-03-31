@@ -47,6 +47,7 @@ makedepends=(
   gobject-introspection
   meson
   plymouth
+  python-packaging
   yelp-tools
 )
 checkdepends=(check)
