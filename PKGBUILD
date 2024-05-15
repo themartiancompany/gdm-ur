@@ -36,9 +36,6 @@ depends=(
   systemd
   systemd-libs
   upower
-  xorg-server
-  xorg-xhost
-  xorg-xrdb
 )
 makedepends=(
   dconf
@@ -49,6 +46,14 @@ makedepends=(
   plymouth
   python-packaging
   yelp-tools
+  xorg-server
+  xorg-xhost
+  xorg-xrdb
+)
+optdepends=(
+  'xorg-server: X session support'
+  'xorg-xhost: X session support'
+  'xorg-xrdb: X session support'
 )
 checkdepends=(check)
 _commit=a5b591cd8d1db5c5d1ebe67d10ec3fe57b9bbded  # tags/46.0^0
