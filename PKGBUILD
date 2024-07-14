@@ -8,7 +8,7 @@ pkgname=(
   libgdm
 )
 pkgver=46.2
-pkgrel=1
+pkgrel=2
 pkgdesc="Display manager and login screen"
 url="https://gitlab.gnome.org/GNOME/gdm"
 arch=(x86_64)
@@ -41,10 +41,10 @@ makedepends=(
   dconf
   docbook-xsl
   git
+  glib2-devel
   gobject-introspection
   meson
   plymouth
-  python-packaging
   yelp-tools
   xorg-server
   xorg-xhost
