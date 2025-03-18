@@ -1,6 +1,6 @@
 pkgbase = gdm
 	pkgdesc = Display manager and login screen
-	pkgver = 48beta
+	pkgver = 48.0
 	pkgrel = 1
 	url = https://gitlab.gnome.org/GNOME/gdm
 	arch = x86_64
@@ -42,13 +42,12 @@ pkgbase = gdm
 	optdepends = xorg-server: X session support
 	optdepends = xorg-xhost: X session support
 	optdepends = xorg-xrdb: X session support
-	source = git+https://gitlab.gnome.org/GNOME/gdm.git#tag=48.beta
+	source = git+https://gitlab.gnome.org/GNOME/gdm.git#tag=48.0
 	source = 0001-Xsession-Don-t-start-ssh-agent-by-default.patch
-	b2sums = 9148f4804345dc0142086c2554392da8f806e7d8500650cb8953c4ba40ccf09d737c1206c1b4abc687c47a793b655f885d1b181bb77ffda2e5122d66f4865f7d
+	b2sums = d08d2137f630999b2f36bd8b798805e145fd7350fc4a092056cfdddd2170ae57b3b17a3a8f44f4c08a7e527a165fdce0dfa7a934188bc487d2a6d5bd848497b0
 	b2sums = f7e868fdd7cc121433de1572583eb728f4d186cd4f52c6d6c8f2ccf4a3cf781144ff71f704f13571ddb97a1ff4ec55cfa3df25d38737ad19da21e84ddc2d3ee4
 
 pkgname = gdm
-	install = gdm.install
 	groups = gnome
 	depends = accountsservice
 	depends = audit
