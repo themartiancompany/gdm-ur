@@ -127,9 +127,6 @@ package_gdm() {
   install -d -o 120 -g 120 -m 1770 var/lib/gdm
   install -d -o 120 -g 120 -m 0700 var/lib/gdm/.config
   install -d -o 120 -g 120 -m 0700 var/lib/gdm/.config/pulse
-  install -d -o 120 -g 120 -m 0700 var/lib/gdm/.local
-  install -d -o 120 -g 120 -m 0755 var/lib/gdm/.local/share
-  install -d -o 120 -g 120 -m 0755 var/lib/gdm/.local/share/applications
 
   # https://src.fedoraproject.org/rpms/gdm/blob/master/f/default.pa-for-gdm
   install -o120 -g120 -m644 /dev/stdin var/lib/gdm/.config/pulse/default.pa <<END
