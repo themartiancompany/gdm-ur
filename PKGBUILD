@@ -8,7 +8,7 @@ pkgname=(
   libgdm
 )
 pkgver=48.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Display manager and login screen"
 url="https://gitlab.gnome.org/GNOME/gdm"
 arch=(x86_64)
@@ -59,18 +59,20 @@ checkdepends=(check)
 source=(
   "git+https://gitlab.gnome.org/GNOME/gdm.git#tag=${pkgver/[a-z]/.&}"
   0001-Xsession-Don-t-start-ssh-agent-by-default.patch
-  gdm-settings-utils_rename_variable_to_fix_build_with_gcc_15.patch
+  0002-gdm-settings-utils-rename-variable-to-fix-build-with.patch
 )
 b2sums=('d08d2137f630999b2f36bd8b798805e145fd7350fc4a092056cfdddd2170ae57b3b17a3a8f44f4c08a7e527a165fdce0dfa7a934188bc487d2a6d5bd848497b0'
         'f7e868fdd7cc121433de1572583eb728f4d186cd4f52c6d6c8f2ccf4a3cf781144ff71f704f13571ddb97a1ff4ec55cfa3df25d38737ad19da21e84ddc2d3ee4'
-        '4f62270f1e3fd5b3594e35cfa115bd3cbc0652986628ae0c9a22da00657b60804734f84cf479b00ca33d87ac10e1bb1515ed6ff000431ffc5042b5685bcd6961')
+        'c704138b5f6be3ebb7d6606a78d2008cff1116bb033a0ba531b21e2b0cfc7c631c7c0720aa35694c1f0e36d9d6b81e9186f8e3f9fa12e885fe522cfcd2d98d63')
 
 prepare() {
   cd gdm
 
   # Don't start ssh-agent by default
   git apply -3 ../0001-Xsession-Don-t-start-ssh-agent-by-default.patch
-  git apply -3 ../gdm-settings-utils_rename_variable_to_fix_build_with_gcc_15.patch
+
+  # https://gitlab.gnome.org/GNOME/gdm/-/merge_requests/273
+  git apply -3 ../0002-gdm-settings-utils-rename-variable-to-fix-build-with.patch
 }
 
 build() {

@@ -1,4 +1,4 @@
-From 2fbc2ac50b9f143eb594e5f77a8051222ffbd2c9 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Zbigniew=20J=C4=99drzejewski-Szmek?= <zbyszek@in.waw.pl>
 Date: Mon, 27 Jan 2025 14:01:23 +0100
 Subject: [PATCH] gdm-settings-utils: rename variable to fix build with gcc 15
@@ -10,7 +10,7 @@ In GNU23 C, bool is a keyword. Rename the variable to avoid syntax error.
  2 files changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/common/gdm-settings-utils.c b/common/gdm-settings-utils.c
-index 636be3a9e..da4c7aefb 100644
+index 636be3a9ee4d..da4c7aefbd72 100644
 --- a/common/gdm-settings-utils.c
 +++ b/common/gdm-settings-utils.c
 @@ -287,16 +287,16 @@ gdm_settings_parse_boolean_as_value  (gboolean boolval)
@@ -35,7 +35,7 @@ index 636be3a9e..da4c7aefb 100644
          } else {
                  return FALSE;
 diff --git a/common/gdm-settings-utils.h b/common/gdm-settings-utils.h
-index 4f2362ce7..734d625c7 100644
+index 4f2362ce7743..734d625c7003 100644
 --- a/common/gdm-settings-utils.h
 +++ b/common/gdm-settings-utils.h
 @@ -44,7 +44,7 @@ gboolean                  gdm_settings_parse_schemas           (const char  *fil
@@ -47,6 +47,3 @@ index 4f2362ce7..734d625c7 100644
  gboolean                  gdm_settings_parse_value_as_integer  (const char *value,
                                                                  int        *intval);
  gboolean                  gdm_settings_parse_value_as_double   (const char *value,
--- 
-GitLab
-
