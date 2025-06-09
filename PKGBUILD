@@ -7,8 +7,8 @@ pkgname=(
   gdm
   libgdm
 )
-pkgver=48.0
-pkgrel=2
+pkgver=49alpha.0
+pkgrel=1
 pkgdesc="Display manager and login screen"
 url="https://gitlab.gnome.org/GNOME/gdm"
 arch=(x86_64)
@@ -18,22 +18,15 @@ depends=(
   audit
   bash
   gcc-libs
-  gdk-pixbuf2
   glib2
   glibc
   gnome-session
   gnome-shell
-  gtk3
   json-glib
   keyutils
   libcanberra
   libgudev
-  libx11
-  libxau
-  libxcb
-  libxdmcp
   pam
-  systemd
   systemd-libs
   upower
 )
@@ -46,33 +39,15 @@ makedepends=(
   meson
   plymouth
   yelp-tools
-  xorg-server
-  xorg-xhost
-  xorg-xrdb
-)
-optdepends=(
-  'xorg-server: X session support'
-  'xorg-xhost: X session support'
-  'xorg-xrdb: X session support'
 )
 checkdepends=(check)
 source=(
   "git+https://gitlab.gnome.org/GNOME/gdm.git#tag=${pkgver/[a-z]/.&}"
-  0001-Xsession-Don-t-start-ssh-agent-by-default.patch
-  0002-gdm-settings-utils-rename-variable-to-fix-build-with.patch
 )
-b2sums=('d08d2137f630999b2f36bd8b798805e145fd7350fc4a092056cfdddd2170ae57b3b17a3a8f44f4c08a7e527a165fdce0dfa7a934188bc487d2a6d5bd848497b0'
-        'f7e868fdd7cc121433de1572583eb728f4d186cd4f52c6d6c8f2ccf4a3cf781144ff71f704f13571ddb97a1ff4ec55cfa3df25d38737ad19da21e84ddc2d3ee4'
-        'c704138b5f6be3ebb7d6606a78d2008cff1116bb033a0ba531b21e2b0cfc7c631c7c0720aa35694c1f0e36d9d6b81e9186f8e3f9fa12e885fe522cfcd2d98d63')
+b2sums=('ced95a821eef70268191f382633271ed7f2509d9ebb36072037ee015f3740bd64f1dc9392c51ba4fc2f36a45679be8ee90ee66c4b6c051f295659a9225b09608')
 
 prepare() {
   cd gdm
-
-  # Don't start ssh-agent by default
-  git apply -3 ../0001-Xsession-Don-t-start-ssh-agent-by-default.patch
-
-  # https://gitlab.gnome.org/GNOME/gdm/-/merge_requests/273
-  git apply -3 ../0002-gdm-settings-utils-rename-variable-to-fix-build-with.patch
 }
 
 build() {
@@ -80,7 +55,6 @@ build() {
     -D dbus-sys="/usr/share/dbus-1/system.d"
     -D default-pam-config=arch
     -D default-path="/usr/local/bin:/usr/local/sbin:/usr/bin"
-    -D gdm-xsession=true
     -D ipv6=true
     -D run-dir=/run/gdm
     -D selinux=disabled
