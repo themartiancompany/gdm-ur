@@ -8,7 +8,7 @@ pkgname=(
   libgdm
 )
 pkgver=49alpha.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Display manager and login screen"
 url="https://gitlab.gnome.org/GNOME/gdm"
 arch=(x86_64)
@@ -48,6 +48,9 @@ b2sums=('ced95a821eef70268191f382633271ed7f2509d9ebb36072037ee015f3740bd64f1dc93
 
 prepare() {
   cd gdm
+  # Drop dependency on Wacom g-s-d plugin
+  # https://gitlab.gnome.org/GNOME/gdm/-/commit/16ff9a65a242c556e3f10cdc8ed17a0027c60d6c
+  git cherry-pick -n 16ff9a65a242c556e3f10cdc8ed17a0027c60d6c
 }
 
 build() {
