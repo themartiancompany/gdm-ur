@@ -7,8 +7,8 @@ pkgname=(
   gdm
   libgdm
 )
-pkgver=49alpha.0
-pkgrel=2
+pkgver=49alpha.1
+pkgrel=1
 pkgdesc="Display manager and login screen"
 url="https://gitlab.gnome.org/GNOME/gdm"
 arch=(x86_64)
@@ -44,13 +44,10 @@ checkdepends=(check)
 source=(
   "git+https://gitlab.gnome.org/GNOME/gdm.git#tag=${pkgver/[a-z]/.&}"
 )
-b2sums=('ced95a821eef70268191f382633271ed7f2509d9ebb36072037ee015f3740bd64f1dc9392c51ba4fc2f36a45679be8ee90ee66c4b6c051f295659a9225b09608')
+b2sums=('630ef6a551019b6d34e3141e7d99112f939bd41ed9034db2f22b94216a8a4b93716b7697c7d7e73c9956f9214c551c5fa6c4dfd5eaee16e7ae562986e1d5be41')
 
 prepare() {
   cd gdm
-  # Drop dependency on Wacom g-s-d plugin
-  # https://gitlab.gnome.org/GNOME/gdm/-/commit/16ff9a65a242c556e3f10cdc8ed17a0027c60d6c
-  git cherry-pick -n 16ff9a65a242c556e3f10cdc8ed17a0027c60d6c
 }
 
 build() {
@@ -87,7 +84,6 @@ package_gdm() {
   backup=(
     etc/gdm/PostSession/Default
     etc/gdm/PreSession/Default
-    etc/gdm/Xsession
     etc/gdm/custom.conf
     etc/pam.d/gdm-autologin
     etc/pam.d/gdm-fingerprint

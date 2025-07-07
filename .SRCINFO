@@ -1,7 +1,7 @@
 pkgbase = gdm
 	pkgdesc = Display manager and login screen
-	pkgver = 49alpha.0
-	pkgrel = 2
+	pkgver = 49alpha.1
+	pkgrel = 1
 	url = https://gitlab.gnome.org/GNOME/gdm
 	arch = x86_64
 	license = GPL-2.0-or-later
@@ -29,8 +29,8 @@ pkgbase = gdm
 	depends = pam
 	depends = systemd-libs
 	depends = upower
-	source = git+https://gitlab.gnome.org/GNOME/gdm.git#tag=49.alpha.0
-	b2sums = ced95a821eef70268191f382633271ed7f2509d9ebb36072037ee015f3740bd64f1dc9392c51ba4fc2f36a45679be8ee90ee66c4b6c051f295659a9225b09608
+	source = git+https://gitlab.gnome.org/GNOME/gdm.git#tag=49.alpha.1
+	b2sums = 630ef6a551019b6d34e3141e7d99112f939bd41ed9034db2f22b94216a8a4b93716b7697c7d7e73c9956f9214c551c5fa6c4dfd5eaee16e7ae562986e1d5be41
 
 pkgname = gdm
 	groups = gnome
@@ -53,7 +53,6 @@ pkgname = gdm
 	optdepends = fprintd: fingerprint authentication
 	backup = etc/gdm/PostSession/Default
 	backup = etc/gdm/PreSession/Default
-	backup = etc/gdm/Xsession
 	backup = etc/gdm/custom.conf
 	backup = etc/pam.d/gdm-autologin
 	backup = etc/pam.d/gdm-fingerprint
