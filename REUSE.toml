@@ -1,0 +1,30 @@
+version = 1
+
+[[annotations]]
+path = [
+    "PKGBUILD",
+    "README.md",
+    "keys/**",
+    ".SRCINFO",
+    ".nvchecker.toml",
+    "*.install",
+    "*.sysusers",
+    "*.tmpfiles",
+    "*.logrotate",
+    "*.pam",
+    "*.service",
+    "*.socket",
+    "*.timer",
+    "*.desktop",
+    "*.hook",
+]
+SPDX-FileCopyrightText = "Arch Linux contributors"
+SPDX-License-Identifier = "0BSD"
+
+[[annotations]]
+path = [
+    "0001-Xsession-Don-t-start-ssh-agent-by-default.patch",
+    "0002-gdm-settings-utils-rename-variable-to-fix-build-with.patch",
+]
+SPDX-FileCopyrightText = "gdm contributors"
+SPDX-License-Identifier = "GPL-2.0-or-later"
