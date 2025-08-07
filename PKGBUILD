@@ -7,7 +7,7 @@ pkgname=(
   gdm
   libgdm
 )
-pkgver=49alpha.1
+pkgver=49beta
 pkgrel=1
 pkgdesc="Display manager and login screen"
 url="https://gitlab.gnome.org/GNOME/gdm"
@@ -44,7 +44,7 @@ checkdepends=(check)
 source=(
   "git+https://gitlab.gnome.org/GNOME/gdm.git#tag=${pkgver/[a-z]/.&}"
 )
-b2sums=('630ef6a551019b6d34e3141e7d99112f939bd41ed9034db2f22b94216a8a4b93716b7697c7d7e73c9956f9214c551c5fa6c4dfd5eaee16e7ae562986e1d5be41')
+b2sums=('8d624ede1bc8d17dc66e6a1b67bad500c0a11d872bbb0608af65459a5175de3e3b28fe79d0445ffd5526861e4ef17929fcefb62221984f709d992b7d53ef3daf')
 
 prepare() {
   cd gdm
