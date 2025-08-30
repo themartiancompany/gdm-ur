@@ -7,8 +7,8 @@ pkgname=(
   gdm
   libgdm
 )
-pkgver=49beta
-pkgrel=2
+pkgver=49rc
+pkgrel=1
 pkgdesc="Display manager and login screen"
 url="https://gitlab.gnome.org/GNOME/gdm"
 arch=(x86_64)
@@ -44,14 +44,10 @@ checkdepends=(check)
 source=(
   "git+https://gitlab.gnome.org/GNOME/gdm.git#tag=${pkgver/[a-z]/.&}"
 )
-b2sums=('8d624ede1bc8d17dc66e6a1b67bad500c0a11d872bbb0608af65459a5175de3e3b28fe79d0445ffd5526861e4ef17929fcefb62221984f709d992b7d53ef3daf')
+b2sums=('92b3d2f711cff8e348cdb09c35d8ff06198ab07dfb4ef80b329286aa09adb45b0051a1d9ea6dfc6ffe84234513909e4be8928f68eb0b0359c4748019535f5924')
 
 prepare() {
   cd gdm
-
-  # data: Use ingroup for PAM
-  ## https://gitlab.gnome.org/GNOME/gdm/-/commit/6597d44380ed6372a8de70ec3b18618c828ae094
-  git cherry-pick -n 6597d44380ed6372a8de70ec3b18618c828ae094
 }
 
 build() {
