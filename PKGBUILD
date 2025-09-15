@@ -97,29 +97,8 @@ package_gdm() {
 
   cd "$pkgdir"
 
-  install -d -o   0 -g   0 -m 0755 var
-  install -d -o   0 -g   0 -m 0755 var/lib
-  install -d -o 120 -g 120 -m 1770 var/lib/gdm
-  install -d -o 120 -g 120 -m 0700 var/lib/gdm/.config
-  install -d -o 120 -g 120 -m 0700 var/lib/gdm/.config/pulse
-
-  # https://src.fedoraproject.org/rpms/gdm/blob/master/f/default.pa-for-gdm
-  install -o120 -g120 -m644 /dev/stdin var/lib/gdm/.config/pulse/default.pa <<END
-load-module module-device-restore
-load-module module-card-restore
-load-module module-udev-detect
-load-module module-native-protocol-unix
-load-module module-default-device-restore
-load-module module-always-sink
-load-module module-intended-roles
-load-module module-suspend-on-idle
-load-module module-systemd-login
-load-module module-position-event-sounds
-END
-
   install -Dm644 /dev/stdin usr/lib/sysusers.d/gdm.conf <<END
 g gdm 120 -
-u gdm 120 "Gnome Display Manager" /var/lib/gdm
 END
 
   install -Dm644 /dev/stdin usr/share/glib-2.0/schemas/org.gnome.login-screen.gschema.override <<END
