@@ -123,7 +123,7 @@ package_gdm() {
 g gdm 120 -
 END
 
-  install -Dm644 /dev/stdin usr/share/glib-2.0/schemas/org.gnome.login-screen.gschema.override <<END
+  install -Dm644 /dev/stdin usr/share/glib-2.0/schemas/30_org.archlinux.gdm.gschema.override <<END
 [org.gnome.login-screen]
 enable-smartcard-authentication=false
 logo='/usr/share/pixmaps/archlinux-logo-text-dark.svg'
