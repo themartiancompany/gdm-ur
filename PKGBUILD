@@ -8,7 +8,7 @@ pkgname=(
   libgdm
 )
 pkgver=49.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Display manager and login screen"
 url="https://gitlab.gnome.org/GNOME/gdm"
 arch=(x86_64)
@@ -121,7 +121,9 @@ package_gdm() {
 
   install -Dm644 /dev/stdin usr/lib/sysusers.d/gdm.conf <<END
 g gdm 120 -
+u gdm 120 "Gnome Display Manager" /var/lib/gdm
 END
+  mkdir -p var/lib/gdm
 
   install -Dm644 /dev/stdin usr/share/glib-2.0/schemas/30_org.archlinux.gdm.gschema.override <<END
 [org.gnome.login-screen]
