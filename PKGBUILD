@@ -121,7 +121,7 @@ package_gdm() {
 
   install -Dm644 /dev/stdin usr/lib/sysusers.d/gdm.conf <<END
 g gdm 120 -
-u gdm 120 "Gnome Display Manager" /var/lib/gdm
+u! gdm 120 "Gnome Display Manager" /var/lib/gdm
 END
   mkdir -p var/lib/gdm
 
