@@ -8,7 +8,7 @@ pkgname=(
   libgdm
 )
 pkgver=50alpha.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Display manager and login screen"
 url="https://gitlab.gnome.org/GNOME/gdm"
 arch=(x86_64)
@@ -107,6 +107,10 @@ package_gdm() {
   meson install -C build --destdir "$pkgdir"
 
   cd "$pkgdir"
+
+  install -Dm644 /dev/stdin usr/lib/sysusers.d/gdm.conf <<END
+g gdm 120 -
+END
 
   mkdir -p var/lib/gdm
 
