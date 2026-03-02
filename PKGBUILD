@@ -7,7 +7,7 @@ pkgname=(
   gdm
   libgdm
 )
-pkgver=50beta
+pkgver=50rc
 pkgrel=1
 pkgdesc="Display manager and login screen"
 url="https://gitlab.gnome.org/GNOME/gdm"
@@ -17,7 +17,6 @@ depends=(
   accountsservice
   audit
   bash
-  gcc-libs
   gdk-pixbuf2
   glib2
   glibc
@@ -26,6 +25,7 @@ depends=(
   json-glib
   keyutils
   libcanberra
+  libgcc
   libgudev
   libxau
   libxcb
@@ -50,7 +50,7 @@ source=(
   "git+https://gitlab.gnome.org/GNOME/gdm.git#tag=${pkgver/[a-z]/.&}"
   0001-Xsession-Don-t-start-ssh-agent-by-default.patch
 )
-b2sums=('eabee84ef472512bf51ecf505a8d774ce158aed9cd17b9000501986e346d8f911d2451ff0cab1c79837b624e197fd7df1afccb8bc47a94877ae101057884d5fd'
+b2sums=('5be9fc8bbbe9e4c66cc1d5c4737f9e1d03fd31257c3f82e71030d41ab7653a68d4f982583426dfcaa110419ee678d9073ec8878a45a62f380b1a4d47fb13ecc7'
         'f7e868fdd7cc121433de1572583eb728f4d186cd4f52c6d6c8f2ccf4a3cf781144ff71f704f13571ddb97a1ff4ec55cfa3df25d38737ad19da21e84ddc2d3ee4')
 
 prepare() {
@@ -129,9 +129,9 @@ package_libgdm() {
   pkgdesc+=" - support library"
   depends=(
     dconf
-    gcc-libs
     glib2
     glibc
+    libgcc
     libg{lib,object,io}-2.0.so
     libsystemd.so
     systemd-libs
