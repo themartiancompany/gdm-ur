@@ -1,6 +1,6 @@
 pkgbase = gdm
 	pkgdesc = Display manager and login screen
-	pkgver = 50rc
+	pkgver = 50.0
 	pkgrel = 1
 	url = https://gitlab.gnome.org/GNOME/gdm
 	arch = x86_64
@@ -34,9 +34,9 @@ pkgbase = gdm
 	depends = systemd
 	depends = systemd-libs
 	depends = upower
-	source = git+https://gitlab.gnome.org/GNOME/gdm.git#tag=50.rc
+	source = git+https://gitlab.gnome.org/GNOME/gdm.git#tag=50.0
 	source = 0001-Xsession-Don-t-start-ssh-agent-by-default.patch
-	b2sums = 5be9fc8bbbe9e4c66cc1d5c4737f9e1d03fd31257c3f82e71030d41ab7653a68d4f982583426dfcaa110419ee678d9073ec8878a45a62f380b1a4d47fb13ecc7
+	b2sums = 5c3784315c8718aabe6c4abacfca3bc00ac8d028f2a0442d397496633f1e0af44ac4dd156d8b2025212b68a43b3d837d32423aa82cc2be7d565f2445c8144839
 	b2sums = f7e868fdd7cc121433de1572583eb728f4d186cd4f52c6d6c8f2ccf4a3cf781144ff71f704f13571ddb97a1ff4ec55cfa3df25d38737ad19da21e84ddc2d3ee4
 
 pkgname = gdm
