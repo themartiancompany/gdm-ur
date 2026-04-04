@@ -7,7 +7,7 @@ pkgname=(
   gdm
   libgdm
 )
-pkgver=49.2
+pkgver=50.0
 pkgrel=1
 pkgdesc="Display manager and login screen"
 url="https://gitlab.gnome.org/GNOME/gdm"
@@ -17,22 +17,20 @@ depends=(
   accountsservice
   audit
   bash
-  gcc-libs
   gdk-pixbuf2
   glib2
   glibc
   gnome-session
   gnome-shell
-  gtk3
   json-glib
   keyutils
   libcanberra
+  libgcc
   libgudev
-  libx11
   libxau
   libxcb
-  libxdmcp
   pam
+  polkit
   systemd
   systemd-libs
   upower
@@ -46,21 +44,13 @@ makedepends=(
   meson
   plymouth
   yelp-tools
-  xorg-server
-  xorg-xhost
-  xorg-xrdb
-)
-optdepends=(
-  'xorg-server: X session support'
-  'xorg-xhost: X session support'
-  'xorg-xrdb: X session support'
 )
 checkdepends=(check)
 source=(
   "git+https://gitlab.gnome.org/GNOME/gdm.git#tag=${pkgver/[a-z]/.&}"
   0001-Xsession-Don-t-start-ssh-agent-by-default.patch
 )
-b2sums=('3a5bfad78a2eb390a5be0fa2667e8a173b26da7c9b527b88b4d0562825942ee325117c11a979442e516ff6435560471adee3982c20c84efccf0635407ddeee82'
+b2sums=('5c3784315c8718aabe6c4abacfca3bc00ac8d028f2a0442d397496633f1e0af44ac4dd156d8b2025212b68a43b3d837d32423aa82cc2be7d565f2445c8144839'
         'f7e868fdd7cc121433de1572583eb728f4d186cd4f52c6d6c8f2ccf4a3cf781144ff71f704f13571ddb97a1ff4ec55cfa3df25d38737ad19da21e84ddc2d3ee4')
 
 prepare() {
@@ -76,7 +66,6 @@ build() {
     -D default-pam-config=arch
     -D default-path="/usr/local/bin:/usr/local/sbin:/usr/bin"
     -D gdm-xsession=true
-    -D ipv6=true
     -D run-dir=/run/gdm
     -D selinux=disabled
   )
@@ -121,8 +110,8 @@ package_gdm() {
 
   install -Dm644 /dev/stdin usr/lib/sysusers.d/gdm.conf <<END
 g gdm 120 -
-u! gdm 120 "Gnome Display Manager" /var/lib/gdm
 END
+
   mkdir -p var/lib/gdm
 
   install -Dm644 /dev/stdin usr/share/glib-2.0/schemas/30_org.archlinux.gdm.gschema.override <<END
@@ -140,9 +129,9 @@ package_libgdm() {
   pkgdesc+=" - support library"
   depends=(
     dconf
-    gcc-libs
     glib2
     glibc
+    libgcc
     libg{lib,object,io}-2.0.so
     libsystemd.so
     systemd-libs
