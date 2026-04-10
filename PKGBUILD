@@ -8,7 +8,7 @@ pkgname=(
   libgdm
 )
 pkgver=50.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Display manager and login screen"
 url="https://gitlab.gnome.org/GNOME/gdm"
 arch=(x86_64)
