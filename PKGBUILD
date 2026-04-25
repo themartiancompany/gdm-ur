@@ -165,8 +165,11 @@ pkgname=(
 pkgver=50.0
 _commit="7aa5c1a3d73b51b9ccf89c51d33bfa53cc57d52e"
 _bundle_commit="8e557895f05313665fa27c31e121be7693728c9e"
-pkgrel=9
-pkgdesc="Display manager and login screen"
+pkgrel=10
+_pkgdesc=(
+  "Display manager and login screen"
+)
+pkgdesc="${_pkgdesc[*]}"
 if [[ ! -v "_http" ]]; then
   if [[ "${_ns}" == "GNOME" ]]; then
     _http="https://gitlab.${_proj}.org"
@@ -533,7 +536,7 @@ package_gdm() {
   install \
     -vDm644 \
     "/dev/stdin" \
-    "${pkgdir}/${_usr}/lib/sysusers.d/${_pkg}.conf" <<END
+    "${_usr}/lib/sysusers.d/${_pkg}.conf" <<END
 g ${_pkg} 120 -
 END
   mkdir \
@@ -555,7 +558,7 @@ END
   install \
     -vDm644 \
     "/dev/stdin" \
-    "${}usr/share/glib-2.0/schemas/30_${_domain}.${_pkg}.gschema.override" <<END
+    "${_usr}/share/glib-2.0/schemas/30_${_domain}.${_pkg}.gschema.override" <<END
 [org.${_proj}.login-screen]
 enable-smartcard-authentication=false
 logo='${_logo}'
