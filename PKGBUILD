@@ -272,8 +272,8 @@ source=(
 sha256sums=(
   "${_ssh_agent_patch_sum}"
 )
-_gitlab_sum="SKIP"
-_gitlab_sig_sum="SKIP"
+_gitlab_sum="55558c197571937f8ee88b2e962e2d62c34f046a2a4480d284bdb70bb8fde1d1"
+_gitlab_sig_sum="30270a48e0b3e9c0292e325b3f87c028daf7f177a779237e02521280624488b2"
 _github_sum="3cfb5ecb6370b31bb763441f20760c913f8bea4897bb923d9f4a9ebf1bac23f0"
 _github_sig_sum="eb2a47031dfafd2ee94984fd42317afb6ce50aa34b48a6a03ec327c010e3a802"
 _bundle_sum="ec2bd72b4af9195d6e9312498328675b3f33c6c6edc1b6a5e75c05ecbc49d359"
@@ -361,6 +361,7 @@ source+=(
 sha256sums+=(
   "${_sum}"
 )
+
 prepare() {
   cd \
     "${_tarname}"
@@ -436,9 +437,10 @@ _etc_get() {
   _os="$(
     uname \
       -o)"
-  _etc="etc"
   if [[ "${_os}" == "Android" ]]; then
     _etc="usr/etc"
+  else
+    _etc="etc"
   fi
   echo \
     "${_etc}"
@@ -468,14 +470,14 @@ _usr_get() {
          "${_env}")"
 }
 
+_etc="$(
+  _etc_get)"
+
 package_gdm() {
   local \
     _logo_dir \
-    _logo_name \
-    _etc \
+    _logo_name
     _usr
-  _etc="$(
-    _etc_get)"
   _usr="$(
     _usr_get)"
   depends+=(
