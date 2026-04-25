@@ -165,7 +165,7 @@ pkgname=(
 pkgver=50.0
 _commit="7aa5c1a3d73b51b9ccf89c51d33bfa53cc57d52e"
 _bundle_commit="8e557895f05313665fa27c31e121be7693728c9e"
-pkgrel=10
+pkgrel=11
 _pkgdesc=(
   "Display manager and login screen"
 )
@@ -272,10 +272,6 @@ elif [[ "${_tag_name}" == "tag" ]]; then
 fi
 _tarname="${_pkg}-${_tag}"
 _tarfile="${_tarname}.${_archive_format}"
-if [[ "${_git}" == "true" ]]; then
-  _src="${_tarname}::git+${_url}.git#${_tag_name}=${_tag}"
-  _sum="SKIP"
-fi
 _ssh_agent_patch="0001-Xsession-Don-t-start-ssh-agent-by-default.patch"
 _ssh_agent_patch_sum="39a7e1189d423dd428ace9baac77ba0442c6706a861d3c3db9eb3a6643e223f8"
 source=(
@@ -339,7 +335,15 @@ _evmfs_src="${_tarfile}::${_evmfs_uri}"
 _sig_uri="${_evmfs_dir}/${_sig_sum}"
 _sig_src="${_tarfile}.sig::${_sig_uri}"
 if [[ "${_evmfs}" == "true" ]]; then
-  if [[ "${_git}" == "false" ]]; then
+  if [[ "${_git}" == "true" ]]; then
+    _src="${_evmfs_src}"
+    source+=(
+      "${_sig_src}"
+    )
+    sha256sums+=(
+      "${_bundle_sig_sum}"
+    )
+  elif [[ "${_git}" == "false" ]]; then
     _src="${_evmfs_src}"
     source+=(
       "${_sig_src}"
