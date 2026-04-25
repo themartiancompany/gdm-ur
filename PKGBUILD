@@ -225,6 +225,7 @@ makedepends=(
   "dconf"
   "glib2-devel"
   "gobject-introspection"
+  "libgudev"
   "meson"
   "plymouth"
 )
@@ -366,10 +367,21 @@ prepare() {
   cd \
     "${_tarname}"
   # Don't start ssh-agent by default
-  git \
-    apply \
-    -3 \
-    "../0001-Xsession-Don-t-start-ssh-agent-by-default.patch"
+  if [[ "${_git}" == "true" ]]; then
+    git \
+      apply \
+      -3 \
+      "../0001-Xsession-Don-t-start-ssh-agent-by-default.patch"
+  else
+    _msg=(
+      "Missing patch."
+    )
+    echo \
+      "${_msg[*]}" \
+      1>&2
+    exit \
+      1
+  fi
 }
 
 build() {
