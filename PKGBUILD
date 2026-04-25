@@ -126,8 +126,26 @@ if [[ ! -v "_http" ]]; then
     fi
   fi
 fi
+if [[ ! -v "_archive_format" ]]; then
+  if [[ "${_git}" == "true" ]]; then
+    if [[ "${_evmfs}" == "true" ]]; then
+      _archive_format="bundle"
+    elif [[ "${_evmfs}" == "false" ]]; then
+      _archive_format="git"
+    fi
+  elif [[ "${_git}" == "false" ]]; then
+    if [[ "${_git_service}" == "github" ]]; then
+      _archive_format="zip"
+    elif [[ "${_git_service}" == "gitlab" ]]; then
+      _archive_format="tar.gz"
+    fi
+  fi
+fi
 if [[ ! -v "_docs" ]]; then
   _docs="true"
+fi
+if [[ ! -v "_tag_name" ]]; then
+  _tag_name="commit"
 fi
 _pkg=gdm
 pkgbase="${_pkg}"
@@ -136,6 +154,8 @@ pkgname=(
   "lib${_pkg}"
 )
 pkgver=50.0
+_commit="7aa5c1a3d73b51b9ccf89c51d33bfa53cc57d52e"
+_bundle_commit="8e557895f05313665fa27c31e121be7693728c9e"
 pkgrel=2
 pkgdesc="Display manager and login screen"
 _http="https://gitlab.${_proj}.org"
@@ -213,15 +233,86 @@ _fprintd_optdepends=(
     'fingerprint authentication'
 )
 _url="${url}"
-
+if [[ "${_tag_name}" == "commit" ]]; then
+  _tag="${_commit}"
+elif [[ "${_tag_name}" == "tag" ]]; then
+  _tag="${pkgver/[a-z]/.&}"
+fi
+_tarname="${_pkg}-${_tag}"
+_tarfile="${_tarname}.${_archive_format}"
+if [[ "${_git}" == "true" ]]; then
+  _src="${_tarname}::git+${_url}.git#${_tag_name}=${_tag}"
+  _sum="SKIP"
+fi
+_ssh_agent_patch="0001-Xsession-Don-t-start-ssh-agent-by-default.patch"
+_ssh_agent_patch_sum="39a7e1189d423dd428ace9baac77ba0442c6706a861d3c3db9eb3a6643e223f8"
 source=(
-  "git+${_url}.git#tag=${pkgver/[a-z]/.&}"
-  "0001-Xsession-Don-t-start-ssh-agent-by-default.patch"
+  "${_ssh_agent_patch}"
 )
-b2sums=(
-  '5c3784315c8718aabe6c4abacfca3bc00ac8d028f2a0442d397496633f1e0af44ac4dd156d8b2025212b68a43b3d837d32423aa82cc2be7d565f2445c8144839'
-  'f7e868fdd7cc121433de1572583eb728f4d186cd4f52c6d6c8f2ccf4a3cf781144ff71f704f13571ddb97a1ff4ec55cfa3df25d38737ad19da21e84ddc2d3ee4'
+sha256sums=(
+  "${_ssh_agent_patch_sum}"
 )
+_gitlab_sum="SKIP"
+_gitlab_sig_sum="SKIP"
+_github_sum="c39042db96a85b64834c479e69a6f3481e92a44b0dde756634a231fbbb4a99e6"
+_github_sig_sum="0f2a92ea1f158233a6b1562e9caec66ad91eaa446b03ecaa235d911c4c8774ef"
+_bundle_sum="ec2bd72b4af9195d6e9312498328675b3f33c6c6edc1b6a5e75c05ecbc49d359"
+_bundle_sig_sum="8591dac542dd56deb8fc96d8610b646d3a840b7530c2282c77977f73df8943c1"
+# that crazy kid address
+_kid_ns="0x926acb6aA4790ff678848A9F1C59E578B148C786"
+# Dvorak
+_dvorak_ns="0x87003Bd6C074C713783df04f36517451fF34CBEf"
+if [[ "${_evmfs}" == "true" ]]; then
+  if [[ "${_git}" == "true" ]]; then
+    _sum="${_bundle_sum}"
+    _sig_sum="${_bundle_sig_sum}"
+    # Tallero
+    # _evmfs_ns="0x6ec7cC56dCeC0a00CB15E97C64B1a5Ec7A31403c"
+  elif [[ "${_git}" == "false" ]]; then
+    if [[ "${_git_service}" == "github" ]]; then
+      _sum="${_github_sum}"
+      _sig_sum="${_github_sig_sum}"
+      # Dvorak
+      # _evmfs_ns="0x87003Bd6C074C713783df04f36517451fF34CBEf"
+      # Truocolo
+      # _evmfs_ns="0x6E5163fC4BFc1511Dbe06bB605cc14a3e462332b"
+    elif [[ "${_git_service}" == "gitlab" ]]; then
+      _sum="${_gitlab_sum}"
+      _sig_sum="${_gitlab_sig_sum}"
+      # Tallero
+      # _evmfs_ns="0x6ec7cC56dCeC0a00CB15E97C64B1a5Ec7A31403c"
+    fi
+  fi
+
+if [[ "${_evmfs}" == "true" ]]; then
+  if [[ "${_git}" == "false" ]]; then
+    _src="${_evmfs_src}"
+    source+=(
+      "${_sig_src}"
+    )
+    sha256sums+=(
+      "${_sig_sum}"
+    )
+  fi
+elif [[ "${_evmfs}" == "false" ]]; then
+  if [[ "${_git}" == true ]]; then
+    _src="${_tarname}::git+${_url}#${_tag_name}=${_tag}?signed"
+    _sum="SKIP"
+  elif [[ "${_git}" == false ]]; then
+    _uri=""
+    if [[ "${_git_service}" == "github" ]]; then
+      if [[ "${_tag_name}" == "commit" ]]; then
+        _uri="${_url}/archive/${_commit}.${_archive_format}"
+        _sum="${_github_sum}"
+      fi
+    elif [[ "${_git_service}" == "gitlab" ]]; then
+      if [[ "${_tag_name}" == "commit" ]]; then
+        _uri="${_url}/-/archive/${_tag}/${_tag}.${_archive_format}"
+      fi
+    fi
+    _src="${_tarfile}::${_uri}"
+  fi
+fi
 
 prepare() {
   cd \
@@ -365,8 +456,9 @@ package_libgdm() {
   provides=(
     "libgdm.so"
   )
-
-  mv libgdm/* "$pkgdir"
+  mv \
+    "libgdm/"* \
+    "${pkgdir}"
 }
 
 # vim:set sw=2 sts=-1 et:
