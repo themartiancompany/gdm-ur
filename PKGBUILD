@@ -165,7 +165,7 @@ pkgname=(
 pkgver=50.0
 _commit="7aa5c1a3d73b51b9ccf89c51d33bfa53cc57d52e"
 _bundle_commit="8e557895f05313665fa27c31e121be7693728c9e"
-pkgrel=11
+pkgrel=12
 _pkgdesc=(
   "Display manager and login screen"
 )

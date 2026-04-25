@@ -1121,7 +1121,7 @@ jobs:
             TERMUX_VERSION=50 \
             arch="${_arch}" \
             _evmfs="false" \
-            _git="false" \
+            _git="true" \
             _git_service="github" \
             reallymakepkg \
               -v \
@@ -2502,7 +2502,7 @@ jobs:
                 "pkgbase")" && \
           arch="${_arch}" \
           _evmfs="false" \
-          _git="false" \
+          _git="true" \
           _git_service="github" \
           reallymakepkg \
             -v \
