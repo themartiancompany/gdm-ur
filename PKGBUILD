@@ -66,9 +66,6 @@ else
   _libc_headers="msys2-w32api-headers"
   _compiler="gcc"
   _libcompiler="gcc-libs"
-  _npth="npth"
-  _pcsclite="pcsclite"
-  _pcsclite="pcsclite"
   _sh="sh"
 fi
 _evmfs_available="$(
@@ -222,6 +219,9 @@ if [[ "${_systemd}" == "true" ]]; then
   )
 fi
 makedepends=(
+  "${_libc}"
+  "${_compiler}"
+  "${_libcompiler}"
   # "cmake"
   "dconf"
   "glib2-devel"
