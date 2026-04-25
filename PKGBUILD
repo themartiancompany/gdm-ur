@@ -222,9 +222,11 @@ if [[ "${_systemd}" == "true" ]]; then
   )
 fi
 makedepends=(
+  # "cmake"
   "dconf"
   "glib2-devel"
   "gobject-introspection"
+  "json-glib"
   "libgudev"
   "meson"
   "plymouth"
