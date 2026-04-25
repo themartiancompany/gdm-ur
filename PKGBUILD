@@ -272,8 +272,6 @@ if [[ "${_evmfs}" == "true" ]]; then
     if [[ "${_git_service}" == "github" ]]; then
       _sum="${_github_sum}"
       _sig_sum="${_github_sig_sum}"
-      # Dvorak
-      # _evmfs_ns="0x87003Bd6C074C713783df04f36517451fF34CBEf"
       # Truocolo
       # _evmfs_ns="0x6E5163fC4BFc1511Dbe06bB605cc14a3e462332b"
     elif [[ "${_git_service}" == "gitlab" ]]; then
@@ -283,7 +281,30 @@ if [[ "${_evmfs}" == "true" ]]; then
       # _evmfs_ns="0x6ec7cC56dCeC0a00CB15E97C64B1a5Ec7A31403c"
     fi
   fi
-
+elif [[ "${_evmfs}" == "false" ]]; then
+  if [[ "${_git}" == "true" ]]; then
+    if [[ "${_tag_name}" == "commit" ]]; then
+      _sum="SKIP"
+      _sig_sum="SKIP"
+    fi
+  elif [[ "${_git}" == "false" ]]; then
+    if [[ "${_git_service}" == "github" ]]; then
+      _sum="${_github_sum}"
+      _sig_sum="${_github_sig_sum}"
+    elif [[ "${_git_service}" == "gitlab" ]]; then
+      _sum="${_gitlab_sig_sum}"
+    fi
+  fi
+fi
+_evmfs_ns="${_dvorak_ns}"
+_evmfs_sig_ns="${_dvorak_ns}"
+_evmfs_network="100"
+_evmfs_address="0x69470b18f8b8b5f92b48f6199dcb147b4be96571"
+_evmfs_dir="evmfs://${_evmfs_network}/${_evmfs_address}/${_evmfs_ns}"
+_evmfs_uri="${_evmfs_dir}/${_sum}"
+_evmfs_src="${_tarfile}::${_evmfs_uri}"
+_sig_uri="${_evmfs_dir}/${_sig_sum}"
+_sig_src="${_tarfile}.sig::${_sig_uri}"
 if [[ "${_evmfs}" == "true" ]]; then
   if [[ "${_git}" == "false" ]]; then
     _src="${_evmfs_src}"
@@ -313,7 +334,12 @@ elif [[ "${_evmfs}" == "false" ]]; then
     _src="${_tarfile}::${_uri}"
   fi
 fi
-
+source+=(
+  "${_src}"
+)
+sha256sums+=(
+  "${_sum}"
+)
 prepare() {
   cd \
     "${_pkg}"
