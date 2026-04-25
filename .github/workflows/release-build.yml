@@ -1920,7 +1920,7 @@ jobs:
                 "pkgbase")" && \
           su \
             -c \
-              "cd ${PWD} && _evmfs="false" _git="false" _git_service="github" reallymakepkg -v -u -w '/home/user/${_pkgbase}-build' -- -df --nocheck --skippgpcheck && ls -lsh" - \
+              "cd ${PWD} && _evmfs="false" _git="true" _git_service="github" reallymakepkg -v -u -w '/home/user/${_pkgbase}-build' -- -df --nocheck --skippgpcheck && ls -lsh" - \
             "user"
       - name:
           Fix naming issue with architecture.
