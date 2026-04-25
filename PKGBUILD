@@ -165,7 +165,7 @@ pkgname=(
 pkgver=50.0
 _commit="7aa5c1a3d73b51b9ccf89c51d33bfa53cc57d52e"
 _bundle_commit="8e557895f05313665fa27c31e121be7693728c9e"
-pkgrel=7
+pkgrel=8
 pkgdesc="Display manager and login screen"
 if [[ ! -v "_http" ]]; then
   if [[ "${_ns}" == "GNOME" ]]; then
@@ -492,14 +492,12 @@ _usr_get() {
 
 _etc="$(
   _etc_get)"
-
+_usr="$(
+  _usr_get)"
 package_gdm() {
   local \
     _logo_dir \
     _logo_name
-    _usr
-  _usr="$(
-    _usr_get)"
   depends+=(
     "lib${_pkg}"
   )
