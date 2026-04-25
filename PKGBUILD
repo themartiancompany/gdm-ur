@@ -83,16 +83,21 @@ if [[ ! -v "_evmfs" ]]; then
     _evmfs="false"
   fi
 fi
-
 if [[ ! -v "_systemd" ]]; then
   _systemd="true"
   if [[ "${_os}" == "Android" || \
         "${_os}" == "Msys" ]]; then
     _systemd="false"
+  elif [[ "${_os}" == "GNU/Linux" ]]; then
+    _systemd="true"
   fi
 fi
 if [[ ! -v "_distro" ]]; then
+  _distro="archlinux"
   _distro="dogeos"
+fi
+if [[ ! -v "_shell" ]]; then
+  _shell="bash"
 fi
 if [[ ! -v "_domain" ]]; then
   if [[ "${_distro}" == "dogeos" ]]; then
@@ -104,15 +109,22 @@ fi
 if [[ ! -v "_proj" ]]; then
   _proj="gnome"
 fi
+if [[ ! -v "_git_service" ]]; then
+  if [[ "${_distro}" == "dogeos" ]]; then
+    _git_service="github"
+  else 
+    _git_service="gitlab"
+  fi
+fi
 if [[ ! -v "_ns" ]]; then
-  _ns="themartiancompany"
-  _ns="GNOME"
+  if [[ "${_git_service}" == "github" ]]; then
+    _ns="themartiancompany"
+  elif [[ "${_git_service}" == "gitlab" ]]; then
+    _ns="GNOME"
+  fi
 fi
 if [[ ! -v "_git" ]]; then
   _git="true"
-fi
-if [[ ! -v "_git_service" ]]; then
-  _git_service="github"
 fi
 if [[ ! -v "_http" ]]; then
   if [[ "${_proj}" == "gnome" ]]; then
@@ -158,8 +170,16 @@ _commit="7aa5c1a3d73b51b9ccf89c51d33bfa53cc57d52e"
 _bundle_commit="8e557895f05313665fa27c31e121be7693728c9e"
 pkgrel=2
 pkgdesc="Display manager and login screen"
-_http="https://gitlab.${_proj}.org"
-_ns="GNOME"
+if [[ ! -v "_http" ]]; then
+  if [[ "${_ns}" == "GNOME" ]]; then
+    _http="https://gitlab.${_proj}.org"
+  elif [[ "${_ns}" == "themartiancompany" ]]; then
+    if [[ "${_git_service}" == "github" || \
+          "${_git_service}" == "gitlab" ]]; then
+      _http="https://${_git_service}.com"
+    fi
+  fi
+fi
 url="${_http}/${_ns}/${_pkg}"
 arch=(
   "aarch64"
@@ -178,12 +198,12 @@ license=(
 depends=(
   "accountsservice"
   "audit"
-  "bash"
+  "${_shell}"
   "gdk-pixbuf2"
   "glib2"
   "${_libc}"
-  "gnome-session"
-  "gnome-shell"
+  "${_proj}-session"
+  "${_proj}-shell"
   "json-glib"
   "keyutils"
   "libcanberra"
@@ -254,8 +274,8 @@ sha256sums=(
 )
 _gitlab_sum="SKIP"
 _gitlab_sig_sum="SKIP"
-_github_sum="c39042db96a85b64834c479e69a6f3481e92a44b0dde756634a231fbbb4a99e6"
-_github_sig_sum="0f2a92ea1f158233a6b1562e9caec66ad91eaa446b03ecaa235d911c4c8774ef"
+_github_sum="3cfb5ecb6370b31bb763441f20760c913f8bea4897bb923d9f4a9ebf1bac23f0"
+_github_sig_sum="eb2a47031dfafd2ee94984fd42317afb6ce50aa34b48a6a03ec327c010e3a802"
 _bundle_sum="ec2bd72b4af9195d6e9312498328675b3f33c6c6edc1b6a5e75c05ecbc49d359"
 _bundle_sig_sum="8591dac542dd56deb8fc96d8610b646d3a840b7530c2282c77977f73df8943c1"
 # that crazy kid address
@@ -293,6 +313,7 @@ elif [[ "${_evmfs}" == "false" ]]; then
       _sig_sum="${_github_sig_sum}"
     elif [[ "${_git_service}" == "gitlab" ]]; then
       _sum="${_gitlab_sig_sum}"
+      _sig_sum="${_gitlab_sig_sum}"
     fi
   fi
 fi
@@ -342,7 +363,7 @@ sha256sums+=(
 )
 prepare() {
   cd \
-    "${_pkg}"
+    "${_tarname}"
   # Don't start ssh-agent by default
   git \
     apply \
@@ -369,7 +390,7 @@ build() {
   )
 
   arch-meson \
-    "${_pkg}" \
+    "${_tarname}" \
     "build" \
     "${_meson_opts[@]}"
   meson \
@@ -387,19 +408,76 @@ check() {
 }
 
 _pick() {
-  local p="$1" f d; shift
+  local \
+    p="$1" \
+    f \
+    d; \
+  shift
   for f; do
-    d="$srcdir/$p/${f#$pkgdir/}"
-    mkdir -p "$(dirname "$d")"
-    mv "$f" "$d"
-    rmdir -p --ignore-fail-on-non-empty "$(dirname "$f")"
+    d="${srcdir}/${p}/${f#${pkgdir}/}"
+    mkdir \
+      -p \
+      "$(dirname "${d}")"
+    mv \
+      "$f" \
+      "$d"
+    rmdir \
+      -p \
+      --ignore-fail-on-non-empty \
+      "$(dirname \
+           "${f}")"
   done
+}
+
+_etc_get() {
+  local \
+    _etc \
+    _os
+  _os="$(
+    uname \
+      -o)"
+  _etc="etc"
+  if [[ "${_os}" == "Android" ]]; then
+    _etc="usr/etc"
+  fi
+  echo \
+    "${_etc}"
+}
+
+_usr_get() {
+  local \
+    _env \
+    _msg=()
+  _env="$(
+    command \
+      -v \
+      "env" || \
+      true)"
+  if [[ "${_env}" == "" ]]; then
+    _msg=(
+      "Big trouble."
+    )
+    echo \
+      "${_msg[*]}" \
+      1>&2
+    exit \
+      1
+  fi
+  dirname \
+    "$(dirname \
+         "${_env}")"
 }
 
 package_gdm() {
   local \
     _logo_dir \
-    _logo_name
+    _logo_name \
+    _etc \
+    _usr
+  _etc="$(
+    _etc_get)"
+  _usr="$(
+    _usr_get)"
   depends+=(
     "lib${_pkg}"
   )
@@ -407,15 +485,15 @@ package_gdm() {
     "${_fprintd_optdepends[*]}"
   )
   backup=(
-    "etc/${_pkg}/PostSession/Default"
-    "etc/${_pkg}/PreSession/Default"
-    "etc/${_pkg}/Xsession"
-    "etc/${_pkg}/custom.conf"
-    "etc/pam.d/${_pkg}-autologin"
-    "etc/pam.d/${_pkg}-fingerprint"
-    "etc/pam.d/${_pkg}-launch-environment"
-    "etc/pam.d/${_pkg}-password"
-    "etc/pam.d/${_pkg}-smartcard"
+    "${_etc}/${_pkg}/PostSession/Default"
+    "${_etc}/${_pkg}/PreSession/Default"
+    "${_etc}/${_pkg}/Xsession"
+    "${_etc}/${_pkg}/custom.conf"
+    "${_etc}/pam.d/${_pkg}-autologin"
+    "${_etc}/pam.d/${_pkg}-fingerprint"
+    "${_etc}/pam.d/${_pkg}-launch-environment"
+    "${_etc}/pam.d/${_pkg}-password"
+    "${_etc}/pam.d/${_pkg}-smartcard"
   )
   groups=(
     "${_proj}"
@@ -426,30 +504,35 @@ package_gdm() {
       "build" \
     --destdir \
       "${pkgdir}"
-
   cd \
     "${pkgdir}"
   install \
     -vDm644 \
     "/dev/stdin" \
-    "usr/lib/sysusers.d/${_pkg}.conf" <<END
+    "${_usr}/lib/sysusers.d/${_pkg}.conf" <<END
 g ${_pkg} 120 -
 END
   mkdir \
     -p \
     "var/lib/${_pkg}"
   if [[ "${_distro}" == "archlinux" ]]; then
-    _logo_dir="/usr/share/pixmaps"
+    _logo_dir="${_usr}/share/pixmaps"
     _logo_name="${_distro}-logo-text-dark.svg"
     _logo="${_logo_dir}/${_logo_name}"
   elif [[ "${_distro}" == "dogeos" ]]; then
-    logo=""
+    _logo_dir="${_usr}/share/icons"
+    # I have produced a dark logo for
+    # dogeos
+    _logo_name="dogeos-transparent-dark.png"
+    # but Ur logo seems more appropriate for an OS
+    _logo_name="ur-logo.png"
+    _logo="${_logo_dir}/${_logo_name}"
   fi
   install \
     -vDm644 \
     "/dev/stdin" \
     "usr/share/glib-2.0/schemas/30_${_domain}.${_pkg}.gschema.override" <<END
-[org.gnome.login-screen]
+[org.${_proj}.login-screen]
 enable-smartcard-authentication=false
 logo='${_logo}'
 END
@@ -457,10 +540,10 @@ END
     "lib${_pkg}" \
     "usr/include"
   _pick \
-    "libgdm" \
-    "usr/lib/"{"girepository-1.0","libgdm"*,"pkgconfig"}
+    "lib${_pkg}" \
+    "usr/lib/"{"girepository-1.0","lib${_pkg}"*,"pkgconfig"}
   _pick \
-    "libgdm" \
+    "lib${_pkg}" \
     "usr/share/"{"gir-1.0","glib-2.0"}
 }
 
@@ -480,10 +563,10 @@ package_libgdm() {
     )
   fi
   provides=(
-    "libgdm.so"
+    "lib${_pkg}.so"
   )
   mv \
-    "libgdm/"* \
+    "lib${_pkg}/"* \
     "${pkgdir}"
 }
 
