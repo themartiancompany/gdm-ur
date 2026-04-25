@@ -165,7 +165,7 @@ pkgname=(
 pkgver=50.0
 _commit="7aa5c1a3d73b51b9ccf89c51d33bfa53cc57d52e"
 _bundle_commit="8e557895f05313665fa27c31e121be7693728c9e"
-pkgrel=6
+pkgrel=7
 pkgdesc="Display manager and login screen"
 if [[ ! -v "_http" ]]; then
   if [[ "${_ns}" == "GNOME" ]]; then
@@ -226,10 +226,16 @@ makedepends=(
   "dconf"
   "glib2-devel"
   "gobject-introspection"
-  "json-glib"
   "libgudev"
   "meson"
   "plymouth"
+  # If these reported
+  # run-time dependencies
+  # have a disable switch
+  # or they just need
+  # headers I'm not sure
+  "accountsservice"
+  "json-glib"
 )
 if [[ "${_docs}" == "true" ]]; then
   makedepends+=(
